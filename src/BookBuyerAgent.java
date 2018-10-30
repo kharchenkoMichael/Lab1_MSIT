@@ -16,6 +16,8 @@ public class BookBuyerAgent extends Agent {
 
     private AID[] sellerAgents;
 
+    private int BooksBuyingCount = 0;
+
     protected void setup() {
         System.out.println("Hello! Buyer" + getAID().getName() + " is ready");
 
@@ -39,6 +41,14 @@ public class BookBuyerAgent extends Agent {
                     System.out.println("Trying to buy " + targetBookTitle);
                     myAgent.addBehaviour(new RequestPerformer(targetBookTitle));
                 }
+            }
+        });
+
+        addBehaviour(new TickerBehaviour(this, 60000) {
+            @Override
+            protected void onTick() {
+                if (BooksBuyingCount == targetBooksTitles.size())
+                    doDelete();
             }
         });
     }
@@ -162,7 +172,7 @@ public class BookBuyerAgent extends Agent {
                 if (reply.getPerformative() == ACLMessage.INFORM) {
                     System.out.println(targetBookTitle+" successfully purchased from agent "+reply.getSender().getName());
                     System.out.println("Price = "+bestPrice);
-                    myAgent.doDelete();
+                    BooksBuyingCount++;
                 }
                 else
                     System.out.println("Attempt failed: requested book already sold.");
