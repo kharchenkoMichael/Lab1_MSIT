@@ -43,6 +43,10 @@ public class BookBuyerAgent extends Agent {
         });
     }
 
+    protected void takeDown() {
+        System.out.println("Buyer-agent "+getAID().getName()+" terminating.");
+    }
+
     private void SearchAgentSeller(Agent myAgent) {
         DFAgentDescription template = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
@@ -162,7 +166,7 @@ public class BookBuyerAgent extends Agent {
                 }
                 else
                     System.out.println("Attempt failed: requested book already sold.");
-                
+
                 step = 4;
             }
             else {
